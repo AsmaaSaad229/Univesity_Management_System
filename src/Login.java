@@ -71,13 +71,8 @@ public class Login extends JDialog {
                 dispose();
             }
         });
-
-
-
-
-
-
         setVisible(true);
+
     }
     String selection;
 //        &&studentRadioButton.isSelected()==false&&teacherRadioButton.isSelected()==false)
@@ -104,10 +99,9 @@ public class Login extends JDialog {
     public Teacher teacher;
 
     private Teacher getAuthenticatedUser(String email, String password){
-//        Student student =null;
         Teacher teacher=null;
         selection=actionPerformed();
-        final String DB_URL = "jdbc:mysql://localhost/univercity";
+        final String DB_URL = "jdbc:mysql://localhost/university";
         final String USERNAME = "root";
         final String PASSWORD ="";
 
@@ -118,7 +112,7 @@ public class Login extends JDialog {
             if(selection == "Admin"){
 
                 String sql ;
-                sql = "SELECT * FROM `login` WHERE email=? AND password=?";
+                sql = "SELECT * FROM `admin` WHERE email=? AND password=?";
 
                 PreparedStatement preparedStatement=conn.prepareStatement(sql);
 
@@ -127,15 +121,12 @@ public class Login extends JDialog {
 
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if(resultSet .next() ){
-                    setVisible(false);
                     new AdminMain(null).setVisible(true);
-//                    teacher = new Student();
-//                    teacher.email=resultSet.getString("email");
-//                return "Admin";
+                    new Login(null).dispose();
                 }
             } else if (selection=="Student") {
                 String sql2 ;
-                sql2 = "SELECT * FROM `students` WHERE email=? AND password=?";
+                sql2 = "SELECT * FROM `student` WHERE email=? AND password=?";
 
                 PreparedStatement preparedStatement2=conn.prepareStatement(sql2);
 
@@ -144,8 +135,26 @@ public class Login extends JDialog {
 
                 ResultSet resultSet2 = preparedStatement2.executeQuery();
                 if(resultSet2 .next() ){
-                    setVisible(false);
-                    new StudentResult(null).setVisible(true);
+                    String options[]={"Result", "Fee", "Cancel"};
+                    int res = JOptionPane.showOptionDialog(Login.this,
+                            "Choose an option", "OptionDialog",JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.WARNING_MESSAGE,null, options, options[0]);
+                    if (res==0){
+                        new Login(null).dispose();
+                        new StudentResult(null).setVisible(true);
+                    }
+                    if (res==1){
+                        new Login(null).dispose();
+                        new  Fee(null).setVisible(true);
+                    }
+                    if(res == 2){
+                        new Login(null).setVisible(true);
+                    }
+
+
+////                    setVisible(false);
+//                    new StudentResult(null).setVisible(true);
+//                    new Login(null).dispose();
 
 //                    teacher = new Student();
 //                    teacher.email=resultSet2.getString("email");
@@ -164,12 +173,30 @@ public class Login extends JDialog {
 
                 ResultSet resultSet3 = preparedStatement3.executeQuery();
                 if(resultSet3.next() ){
-                    setVisible(false);
-                    new EnterMarks(null).setVisible(true);
-//                    teacher= new Teacher();
-//                    teacher.email=resultSet3.getString("email");
-//                    teacher.name=resultSet3.getString("name");
-//                    teacher.branch=resultSet3.getString("department");
+
+                    String options[]={"Add Marks", "Add Attendance", "Cancel"};
+                    int res = JOptionPane.showOptionDialog(Login.this,
+                            "Choose an option", "OptionDialog",JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.WARNING_MESSAGE,null, options, options[0]);
+                    if (res==0){
+                        new Login(null).dispose();
+                        EnterMarks entermark = new EnterMarks(null);
+                        entermark.setVisible(true);
+                    }
+                    if (res==1){
+                        new Login(null).dispose();
+                        Attendance AT = new  Attendance(null);
+                        AT.setVisible(true);
+                    }
+                    if(res == 2){
+                        new Login(null).setVisible(true);
+                    }
+//                    setVisible(false);
+//                    new EnterMarks(null).setVisible(true);
+                    teacher= new Teacher();
+                    teacher.email=resultSet3.getString("email");
+                    teacher.name=resultSet3.getString("name");
+                    teacher.branch=resultSet3.getString("department");
 
                 }
 
@@ -213,8 +240,8 @@ public class Login extends JDialog {
 
     }
 
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-    }
+//    private void createUIComponents() {
+//        // TODO: place custom component creation code here
+//    }
 
 }

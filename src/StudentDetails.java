@@ -50,7 +50,7 @@ public class StudentDetails extends JDialog{
 
         String delRollNo = tfDelete.getText();
 
-        final String DB_URL = "jdbc:mysql://localhost/univercity";
+        final String DB_URL = "jdbc:mysql://localhost/university";
         final String USERNAME = "root";
         final String PASSWORD ="";
 

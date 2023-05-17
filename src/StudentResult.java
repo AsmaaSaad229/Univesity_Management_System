@@ -12,6 +12,7 @@ public class StudentResult  extends JDialog {
     private JTable table1;
     private JTextField tfRollNum;
     private JButton button1;
+    private JButton btBack;
 
     public StudentResult (JFrame parent) {
         super(parent);
@@ -29,7 +30,29 @@ public class StudentResult  extends JDialog {
                 getResult();
             }
         });
-        setVisible(true);
+//        setVisible(true);
+        btBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+
+                String options[]={"Result", "Fee", "Cancel"};
+                int res = JOptionPane.showOptionDialog(null,
+                        "Choose an option", "OptionDialog",JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.WARNING_MESSAGE,null, options, options[0]);
+                if (res==0){
+                    new StudentResult(null).setVisible(true);
+                    new Login(null).dispose();
+                }
+                if (res==1){
+                    new  Fee(null).setVisible(true);
+                    new Login(null).dispose();
+                }
+                if(res == 2){
+                    new Login(null).setVisible(true);
+                }
+            }
+        });
     }
 
 //    public StudentResult(){
@@ -43,7 +66,7 @@ public class StudentResult  extends JDialog {
     void getResult(){
         String tRollNo = tfRollNum.getText();
 
-        final String DB_URL = "jdbc:mysql://localhost/univercity";
+        final String DB_URL = "jdbc:mysql://localhost/university";
         final String USERNAME = "root";
         final String PASSWORD ="";
 

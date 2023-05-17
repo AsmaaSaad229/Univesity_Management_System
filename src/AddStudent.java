@@ -2,7 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AddStudent extends JDialog{
     private JButton btSubmit;
@@ -20,6 +25,7 @@ public class AddStudent extends JDialog{
     private JPasswordField tfPassword;
     private JComboBox tfAcadimicYear;
     private JComboBox tfSemester;
+    private JButton btBack;
 
 
     public AddStudent(JFrame parent){
@@ -43,19 +49,22 @@ public class AddStudent extends JDialog{
                             "successful Added Student:"+student.name,
                             "Submit",JOptionPane.INFORMATION_MESSAGE);
 //                    System.out.println("successful Added Student: "+student.name);
-                }else {
-                    JOptionPane.showMessageDialog(AddStudent.this,
-                            "Added student form is closed.",
-                            "Close",JOptionPane.CLOSED_OPTION);
-                    new AddStudent(null).setVisible(false);
-//                    System.out.println("Added student form is closed.");
                 }
+//                else {
+//                    JOptionPane.showMessageDialog(AddStudent.this,
+//                            "Added student form is closed.",
+//                            "Close",JOptionPane.CLOSED_OPTION);
+//                    new AddStudent(null).setVisible(false);
+////                    System.out.println("Added student form is closed.");
+//                }
             }
         });
         btCancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 JOptionPane.showMessageDialog(AddStudent.this,
+
                         "Do you want to close this page?",
                         "Close",JOptionPane.CLOSED_OPTION);
                 dispose();
@@ -63,8 +72,17 @@ public class AddStudent extends JDialog{
             }
         });
 
-        setVisible(true);
+//        setVisible(true);
 
+        btBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                dispose();
+//              setVisible(false);
+                new AdminMain(null).setVisible(true);
+            }
+        });
     }
 
 
@@ -91,18 +109,28 @@ public class AddStudent extends JDialog{
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
+        String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email );
+        if (!matcher.matches()) {
+            JOptionPane.showMessageDialog(this, "Email address is invalid.","Try Again",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         student = addStudentToDatabase(name,fatherName,age,dob,address,phone,email,password,branch,rollNo,academicYear,semester);
         if (student != null)
             dispose();
         else{
             JOptionPane.showMessageDialog(this, "Failed to submit new student","Try Again",JOptionPane.ERROR_MESSAGE);
         }
+
     }
 
     public Student student;
     private Student addStudentToDatabase(String name, String fatherName, String age, String dob, String address, String phone, String email,String password,String branch, String rollNo,String academicYear, String semester) {
         Student student = null ;
-        final String DB_URL = "jdbc:mysql://localhost/univercity";
+        final String DB_URL = "jdbc:mysql://localhost/university";
         final String USERNAME = "root";
         final String PASSWORD ="";
 
@@ -110,10 +138,9 @@ public class AddStudent extends JDialog{
             Connection conn = DriverManager.getConnection(DB_URL,USERNAME,PASSWORD);
 
            Statement stmt = conn.createStatement();
-            String sql ;
-            sql = "INSERT INTO students(name,fatherName,age,dob,address,phone,email,branch,rollNo,password, acadimicYear,semester)"+
+            String sql  ;
+            sql = "INSERT INTO student(name,fatherName,age,dob,address,phone,email,branch,rollNo,password, acadimicYear,semester)"+
             "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-
 
             PreparedStatement preparedStatement=conn.prepareStatement(sql);
             preparedStatement.setString(1,name);
@@ -129,6 +156,7 @@ public class AddStudent extends JDialog{
             preparedStatement.setString(11,academicYear);
             preparedStatement.setString(12,semester);
 
+//            ResultSet fn = conn.prepareStatement("select name from student where rollNo=2").executeQuery();
 
             int addedRows = preparedStatement.executeUpdate();
             if(addedRows > 0 ){
@@ -161,10 +189,11 @@ public class AddStudent extends JDialog{
 //        AddStudent myAdd = new AddStudent(null);
 //        Student student = myAdd.student;
 //        if(student != null){
-//            JOptionPane.showMessageDialog(AddStudent.this,
-//                    "Email or Password Invalid teacher",
-//                    "Try again",JOptionPane.ERROR_MESSAGE);
+////            JOptionPane.showMessageDialog(AddStudent.this,
+////                    "Email or Password Invalid teacher",
+////                    "Try again",JOptionPane.ERROR_MESSAGE);
 //            System.out.println("successful Added Student: "+student.name);
+////            System.out.println(fn);
 //        }else {
 //            System.out.println("Added student form is closed.");
 //        }

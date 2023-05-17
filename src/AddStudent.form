@@ -80,7 +80,7 @@
         <properties>
           <font name="Segoe Print" size="18" style="1"/>
           <foreground color="-328966"/>
-          <text value="Email ID"/>
+          <text value="Email"/>
         </properties>
       </component>
       <component id="948ac" class="javax.swing.JTextField" binding="tfEmail">
@@ -122,7 +122,7 @@
         <properties>
           <font name="Segoe Print" size="18" style="1"/>
           <foreground color="-328966"/>
-          <text value="Father's Name"/>
+          <text value="LastName"/>
         </properties>
       </component>
       <component id="541d2" class="javax.swing.JTextField" binding="tfFathersName">
@@ -142,7 +142,7 @@
         <properties>
           <font name="Segoe Print" size="18" style="1"/>
           <foreground color="-328966"/>
-          <text value="DOB(dd/mm/yyyy)"/>
+          <text value="DOB(yyyy-mm-dd)"/>
         </properties>
       </component>
       <component id="89c5a" class="javax.swing.JTextField" binding="tfDOB">
@@ -356,6 +356,15 @@
           <grid row="9" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
       </hspacer>
+      <component id="df157" class="javax.swing.JButton" binding="btBack">
+        <constraints>
+          <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Segoe Print" size="18" style="1"/>
+          <text value="Back"/>
+        </properties>
+      </component>
     </children>
   </grid>
 </form>

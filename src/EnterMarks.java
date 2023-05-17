@@ -23,6 +23,7 @@ public class EnterMarks extends JDialog {
     private JTextField tfMark5;
     private JTextField tfMark6;
     private JButton btnSubmit;
+    private JButton btBack;
 
 
     public EnterMarks(JFrame parent){
@@ -40,9 +41,37 @@ public class EnterMarks extends JDialog {
             }
         });
 
-        setVisible(true);
+//        setVisible(true);
 
+        btBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                dispose();
+
+                String options[]={"Add Marks", "Add Attendance", "Cancel"};
+                int res = JOptionPane.showOptionDialog(null,
+                        "Choose an option", "OptionDialog",JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.WARNING_MESSAGE,null, options, options[0]);
+                if (res==0){
+//                    EnterMarks entermark = new EnterMarks(null);
+                    setVisible(true);
+                }
+                if (res==1){
+                    Attendance AT = new  Attendance(null);
+                    AT.setVisible(true);
+                }
+                if(res == 2){
+                        dispose();
+                    Login login=new Login(null);
+                    login.setVisible(true);
+                }
+            }
+        });
     }
+
+//    public EnterMarks(){}
+
 
     private void enterMarks() {
         String rollNo = tfRollNO.getText();
@@ -72,7 +101,7 @@ public class EnterMarks extends JDialog {
 
     private void enterSubAndMarksToDB(String rollNo, String sub1, String sub2, String sub3, String sub4, String sub5, String sub6,
     String mark1,String mark2,String mark3,String mark4,String mark5,String mark6) {
-        final String DB_RUL = "jdbc:mysql://localhost/univercity";
+        final String DB_RUL = "jdbc:mysql://localhost/university";
         final String USERNAME="root";
         final String PASSWORD="";
 
@@ -119,7 +148,7 @@ public class EnterMarks extends JDialog {
     }
 
 
-    public static void main(String []args){
-        EnterMarks enterMarks = new EnterMarks(null);
-    }
+//    public static void main(String []args){
+//        EnterMarks enterMarks = new EnterMarks(null);
+//    }
 }

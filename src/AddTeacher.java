@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AddTeacher extends JDialog{
     private JPanel AddTeacherPanel;
@@ -22,6 +24,7 @@ public class AddTeacher extends JDialog{
     private JComboBox cbDepartment;
     private JPasswordField tfPassword;
     private JComboBox cbSubject;
+    private JButton btBack;
 
     public AddTeacher(JFrame parent){
         super(parent);
@@ -65,8 +68,15 @@ public class AddTeacher extends JDialog{
             }
         });
 
-        setVisible(true);
+//        setVisible(true);
 
+        btBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new AdminMain(null).setVisible(true);
+            }
+        });
     }
 
     private void addTeacher() {
@@ -91,6 +101,14 @@ public class AddTeacher extends JDialog{
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
+        String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email );
+        if (!matcher.matches()) {
+            JOptionPane.showMessageDialog(this, "Email address is invalid.","Try Again",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         teacher = addTeacherToDatabase(name,fatherName,age,dob,address,phone,email,department,rollNo,password,subject);
         if (teacher != null)
             dispose();
@@ -105,7 +123,7 @@ public class AddTeacher extends JDialog{
         Teacher teacher;
         teacher = null;
 
-        final String DB_URL = "jdbc:mysql://localhost/univercity";
+        final String DB_URL = "jdbc:mysql://localhost/university";
         final String USERNAME = "root";
         final String PASSWORD ="";
 
